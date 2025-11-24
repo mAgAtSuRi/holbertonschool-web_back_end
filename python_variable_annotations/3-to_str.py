@@ -3,6 +3,6 @@
 """
 
 
-def floor(n: float) -> str:
+def to_str(n: float) -> str:
     """return floor of n"""
     return str(n)
