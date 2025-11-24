@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""doc"""
+"""Type annotations
+"""
 
 
 def add(a: float, b: float) -> float:
