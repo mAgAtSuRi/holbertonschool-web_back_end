@@ -1,4 +1,3 @@
-#!/user/bin/env python3
 import asyncio, random
 
 async def wait_random(max_delay = 10):
