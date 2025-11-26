@@ -2,32 +2,43 @@
 """
 This module defines an async coroutine that returns a random delay
 """
+from typing import List
 import asyncio
 wait_random = __import__('0-basic_async_syntax').wait_random
 
 
 async def wait_n(n: int, max_delay: int) -> List[float]:
-    """Spawn wait_random n times with the specified max_delay.
-    Return a list of delays in ascending order without using sort().
     """
-    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
-    ordered_delays = []
+    An asynchronous coroutine that returns a list of random delays
 
-    # Get each delay as soon as each task finishes
-    for completed in asyncio.as_completed(tasks):
-        delay = await completed
+    Args:
+    n (int): the number of times the random delay must be generated
+    max_delay (int): the maximum value returned by wait_random
 
-        # Insert delay in ascending order
-        if not ordered_delays:
-            ordered_delays.append(delay)
+    Return:
+    List[float]: A list of delays (float) in sorting order
+    """
+    delays = []
+    for _ in range(n):
+        task = asyncio.create_task(wait_random(max_delay))
+        delays.append(task)
+
+    result_sorted = []
+
+    # Iterate over tasks as they complete
+    for future in asyncio.as_completed(delays):
+        tasks = await future  # Await the next completed task
+
+        if not result_sorted:  # If list empty
+            result_sorted.append(tasks)
         else:
             inserted = False
-            for i in range(len(ordered_delays)):
-                if delay < ordered_delays[i]:
-                    ordered_delays.insert(i, delay)
-                    inserted = True
+            for i in range(len(result_sorted)):
+                if tasks < result_sorted[i]:  # Find the position for insertion
+                    result_sorted.insert(i, tasks)
+                    inserted = True  # Flag to indicate insertion done
                     break
             if not inserted:
-                ordered_delays.append(delay)
+                result_sorted.append(tasks)  # Insertion at the end
 
-    return ordered_delays
+    return result_sorted
