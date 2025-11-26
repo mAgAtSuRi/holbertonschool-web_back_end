@@ -4,10 +4,10 @@ This module defines an async coroutine that returns a random delay
 """
 from typing import List
 import asyncio
-task_wait_random = __import__('3-basic_async_syntax').task_wait_random
+task_wait_random = __import__('3-tasks').task_wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> List[float]:
+async def task_wait_n(n: int, max_delay: int) -> List[float]:
     """
     An asynchronous coroutine that returns a list of random delays
 
