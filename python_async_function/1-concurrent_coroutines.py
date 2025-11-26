@@ -17,5 +17,3 @@ async def wait_n(n: int, max_delay: float):
         time_list.append(delay)
 
     return time_list
-
-print(asyncio.run(wait_n(5, 2)))
