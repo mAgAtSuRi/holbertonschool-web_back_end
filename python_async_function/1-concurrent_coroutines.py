@@ -3,7 +3,22 @@
 This module defines an async coroutine that returns a random delay
 """
 import asyncio
-from basic_async_syntax import wait_random
+import random
+
+
+async def wait_random(max_delay: int = 10) -> float:
+    """
+    An asynchronous coroutine that returns a random delay
+
+    Args:
+    max_delay (int): default value is 10
+
+    Return:
+    A random delay between 0 and max_delay included
+    """
+    delay = random.uniform(0, max_delay)
+    await asyncio.sleep(delay)
+    return delay
 
 
 async def wait_n(n: int, max_delay: float):
