@@ -52,8 +52,8 @@ class Server:
         List[List]: A list of items for the given page or an empty list if
         the page is out of range
         """
-        assert isinstance(page, int) and page >= 0
-        assert isinstance(page_size, int) and page_size >= 0
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
         start, end = index_range(page, page_size)
 
         dataset = self.dataset()
