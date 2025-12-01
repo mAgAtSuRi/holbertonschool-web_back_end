@@ -3,7 +3,7 @@ from typing import Tuple
 """Calculating indexes"""
 
 
-def index_range(page: int, page_size: int) -> Tuple:
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """function returning indexes at pages"""
     if page <= 0:
         page = 1
