@@ -42,7 +42,16 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """get the page"""
+        """Return the index pagination of a dataset.
+
+        Args:
+        page (int): The current page number
+        page_size (int): The total number of items per page
+
+        Returns:
+        List[List]: A list of items for the given page or an empty list if
+        the page is out of range
+        """
         assert isinstance(page, int) and page >= 0
         assert isinstance(page_size, int) and page_size >= 0
         start, end = index_range(page, page_size)
