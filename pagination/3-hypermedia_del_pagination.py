@@ -53,9 +53,10 @@ class Server:
                 data.append(indexed_data[current_index])
             current_index += 1
 
+        next_index = current_index if current_index < dataset_size else None
         return {
-                "index": index * page_size,
-                "next_index": index * page_size + 1,
+                "index": index,
+                "next_index": next_index,
                 "page_size": len(data),
                 "data": data
                 }
