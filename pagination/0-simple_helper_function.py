@@ -7,4 +7,4 @@ def index_range(page: int, page_size: int) -> Tuple:
     """function returning indexes at pages"""
     if page <= 0:
         page = 1
-    return (page - 1, (page - 1) * page_size)
+    return ((page - 1) * page_size, page * page_size)
