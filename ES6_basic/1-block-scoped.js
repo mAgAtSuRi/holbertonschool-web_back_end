@@ -3,8 +3,8 @@ export default function taskBlock(trueOrFalse) {
   let task2 = true;
 
   if (trueOrFalse) {
-    let task = true;    // block-scoped, does not overwrite outer 'task'
-    let task2 = false;  // block-scoped, does not overwrite outer 'task2'
+    let task = true;
+    let task2 = false;
   }
 
   return [task, task2];
