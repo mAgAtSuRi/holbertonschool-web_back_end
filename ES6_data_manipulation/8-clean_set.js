@@ -1,4 +1,8 @@
 export default function cleanSet(set, startString) {
+	if (!startString || typeof startString !== 'string') {
+		return ''
+	}
+
 	let final_string = []
 	for (let element of set) {
 		if (element.startsWith(startString)) {
@@ -7,3 +11,5 @@ export default function cleanSet(set, startString) {
 	}
 	return final_string.join('-')
 }
+console.log(cleanSet(new Set(['bonjovi', 'bonaparte', 'bonappetit', 'banana']), 'bon'));
+console.log(cleanSet(new Set(['bonjovi', 'bonaparte', 'bonappetit', 'banana']), ''));
