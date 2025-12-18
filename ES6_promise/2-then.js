@@ -5,8 +5,8 @@ export default function handleResponseFromAPI(promise) {
 		return {'status': 200, 'body': 'success'}
 	})
 	.catch(() => {
-		console.log("Got a responde from the API")
-		throw new Error('Error')
+		console.log("Got a response from the API")
+		return new Error()
 	})
 }
 const promise = Promise.reject();
