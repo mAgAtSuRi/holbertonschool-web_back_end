@@ -1,32 +1,33 @@
-const fs = require("fs") 
+const fs = require('fs');
 
 function countStudents(path) {
-	try {
-		const content = fs.readFileSync(path, "utf8")
-		const results = {}
-		let total_student = 0
-		const lines = content
-		.trim()
-		.split("\n")
-		.slice(1)
-		console.log(lines)
-		for (const line of lines) {
-			total_student += 1
-			const split_line = line.split(',')
-			if (!(split_line[3] in results)) {
-				results[split_line[3]] = {students_nb : 1, students_list: [split_line[0]]}
-			} else {
-				results[split_line[3]].students_nb += 1
-				results[split_line[3]].students_list.push(split_line[0])
-			}
-		}
-		console.log(`Number of students: ${total_student}`)
-		for (const [key, value] of Object.entries(results)) {
-			console.log(`Number of students in ${key}: ${value.students_nb}. List: ${value.students_list}`)
-		}
-	} catch(error) {
-		throw new Error('Cannot load the database')
-	}
+  try {
+    let totalStudents = 0;
+    const results = {};
+
+    const data = fs.readFileSync(path, 'utf8');
+    const lines = data
+      .trim()
+      .split('\n')
+      .slice(1);
+
+    for (const line of lines) { // pour chaque ligne...
+      totalStudents += 1;
+      const content = line.split(','); // va faire un tableau en séparant les valeurs via la ','
+      if (!(content[3] in results)) {
+        results[content[3]] = { students_nb: 1, students_list: [content[0]] };
+      } else {
+        results[content[3]].students_nb += 1;
+        results[content[3]].students_list.push(content[0]);
+      }
+    }
+    console.log(`Number of students: ${totalStudents}`);
+    for (const [key, value] of Object.entries(results)) {
+      console.log(`Number of students in ${key}: ${value.students_nb}. List: ${value.students_list.join(', ')}`);
+    }
+  } catch (error) {
+    throw new Error('Cannot load the database');
+  }
 }
 
 module.exports = countStudents;
