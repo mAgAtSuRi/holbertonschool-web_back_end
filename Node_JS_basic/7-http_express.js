@@ -11,19 +11,22 @@ function countStudents(path) {
         return;
       }
       const results = {};
-      const lines = data.split('\n');
-      const filteredLines = lines.filter((line) => line.trim() !== '');
-      const studentLines = filteredLines.slice(1);
+      const lines = data.split('\n').filter((line) => line.trim() !== '');
+      const studentLines = lines.slice(1);
 
       for (const line of studentLines) {
         const content = line.split(',');
-        if (!(content[3] in results)) {
-          results[content[3]] = { students_nb: 1, students_list: [content[0]] };
+        const firstName = content[0];
+        const field = content[3];
+
+        if (!(field in results)) {
+          results[field] = { students_nb: 1, students_list: [firstName] };
         } else {
-          results[content[3]].students_nb += 1;
-          results[content[3]].students_list.push(content[0]);
+          results[field].students_nb += 1;
+          results[field].students_list.push(firstName);
         }
       }
+
       resolve(results);
     });
   });
@@ -39,7 +42,6 @@ app.get('/students', async (req, res) => {
   try {
     const results = await countStudents(database);
 
-    // Construire la réponse complète en une seule string
     let responseText = 'This is the list of our students\n';
     let totalStudents = 0;
 
@@ -53,7 +55,8 @@ app.get('/students', async (req, res) => {
       responseText += `Number of students in ${key}: ${value.students_nb}. List: ${value.students_list.join(', ')}\n`;
     }
 
-    res.send(responseText.trim()); // envoyer toute la réponse en une fois
+    // Important : envoyer exactement comme attendu, avec le dernier \n
+    res.send(responseText);
   } catch (error) {
     res.send(error.message);
   }
