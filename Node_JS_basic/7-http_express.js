@@ -53,7 +53,7 @@ app.get('/students', async (req, res) => {
       responseText += `Number of students in ${key}: ${value.students_nb}. List: ${value.students_list.join(', ')}\n`;
     }
 
-    res.send(responseText); // envoyer toute la réponse en une fois
+    res.send(responseText.trim()); // envoyer toute la réponse en une fois
   } catch (error) {
     res.send(error.message);
   }
