@@ -1,67 +1,136 @@
-const fs = require('fs');
 const express = require('express');
+const fs = require('fs');
 
-const database = process.argv[2];
-
+// Function that parse csv
 function countStudents(path) {
   return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf8', (err, data) => {
+    fs.readFile(path, 'utf8', ((err, data) => {
       if (err) {
         reject(new Error('Cannot load the database'));
         return;
       }
       const results = {};
-      const lines = data.split('\n').filter((line) => line.trim() !== '');
-      const studentLines = lines.slice(1);
 
-      for (const line of studentLines) {
-        const content = line.split(',');
-        const firstName = content[0];
-        const field = content[3];
+      const lines = data.split('\n'); // le fichier devient un tableau de ligne en se basant sur \n pour répartir les lignes
+      const filteredLines = lines.filter((line) => line.trim() !== ''); // retirer les lignes vides
+      const studentLines = filteredLines.slice(1);
+      // on lit le tableau de ligne à partir de l'index 1 (sans les entêtes)
 
-        if (!(field in results)) {
-          results[field] = { students_nb: 1, students_list: [firstName] };
+      for (const line of studentLines) { // pour chaque ligne...
+        const content = line.split(','); // va faire un tableau en séparant les valeurs via la ','
+        if (!(content[3] in results)) {
+          results[content[3]] = { students_nb: 1, students_list: [content[0]] };
         } else {
-          results[field].students_nb += 1;
-          results[field].students_list.push(firstName);
+          results[content[3]].students_nb += 1;
+          results[content[3]].students_list.push(content[0]);
         }
       }
-
       resolve(results);
-    });
+    }));
   });
 }
 
 const app = express();
+const port = 1245;
+
+const database = process.argv[2];
 
 app.get('/', (req, res) => {
   res.send('Hello Holberton School!');
 });
 
 app.get('/students', async (req, res) => {
+  res.write('This is the list of our students\n');
   try {
     const results = await countStudents(database);
-
-    let responseText = 'This is the list of our students\n';
     let totalStudents = 0;
-
     for (const key of Object.keys(results)) {
+    // for in parcourerait les propriétés pas seulement de results
+    // mais aussi du prototype (ce dont hérite les objets/dict)
+    // les méthodes object.keys() / object.values() / object.entries()
+    // permettent d'ignorer les propriétés liées au prototype
       totalStudents += results[key].students_nb;
     }
-
-    responseText += `Number of students: ${totalStudents}\n`;
-
+    res.write(`Number of students: ${totalStudents}\n`);
     for (const [key, value] of Object.entries(results)) {
-      responseText += `Number of students in ${key}: ${value.students_nb}. List: ${value.students_list.join(', ')}\n`;
+      res.write(`Number of students in ${key}: ${value.students_nb}. List: ${value.students_list.join(', ')}\n`);
     }
-
-    // Important : envoyer exactement comme attendu, avec le dernier \n
-    res.send(responseText);
+    res.end();
   } catch (error) {
-    res.send(error.message);
+    res.write(error.message);
+    res.end();
   }
 });
 
-app.listen(1245);
-
 module.exports = app;
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+// const fs = require('fs');
+// const express = require('express');
+
+// const database = process.argv[2];
+
+// function countStudents(path) {
+//   return new Promise((resolve, reject) => {
+//     fs.readFile(path, 'utf8', (err, data) => {
+//       if (err) {
+//         reject(new Error('Cannot load the database'));
+//         return;
+//       }
+//       const results = {};
+//       const lines = data.split('\n').filter((line) => line.trim() !== '');
+//       const studentLines = lines.slice(1);
+
+//       for (const line of studentLines) {
+//         const content = line.split(',');
+//         const firstName = content[0];
+//         const field = content[3];
+
+//         if (!(field in results)) {
+//           results[field] = { students_nb: 1, students_list: [firstName] };
+//         } else {
+//           results[field].students_nb += 1;
+//           results[field].students_list.push(firstName);
+//         }
+//       }
+
+//       resolve(results);
+//     });
+//   });
+// }
+
+// const app = express();
+
+// app.get('/', (req, res) => {
+//   res.send('Hello Holberton School!');
+// });
+
+// app.get('/students', async (req, res) => {
+//   try {
+//     const results = await countStudents(database);
+
+//     let responseText = 'This is the list of our students\n';
+//     let totalStudents = 0;
+
+//     for (const key of Object.keys(results)) {
+//       totalStudents += results[key].students_nb;
+//     }
+
+//     responseText += `Number of students: ${totalStudents}\n`;
+
+//     for (const [key, value] of Object.entries(results)) {
+//       responseText += `Number of students in ${key}: ${value.students_nb}. List: ${value.students_list.join(', ')}\n`;
+//     }
+
+//     // Important : envoyer exactement comme attendu, avec le dernier \n
+//     res.send(responseText);
+//   } catch (error) {
+//     res.send(error.message);
+//   }
+// });
+
+// app.listen(1245);
+
+// module.exports = app;
