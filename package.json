@@ -5,5 +5,18 @@
     "babel-jest": "^30.2.0",
     "eslint": "^9.39.1",
     "jest": "^30.2.0"
+  },
+  "name": "holbertonschool-web_back_end",
+  "version": "1.0.0",
+  "description": "first programs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
