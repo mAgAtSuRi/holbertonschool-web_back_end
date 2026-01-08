@@ -121,7 +121,8 @@ app.listen(port, () => {
 //     responseText += `Number of students: ${totalStudents}\n`;
 
 //     for (const [key, value] of Object.entries(results)) {
-//       responseText += `Number of students in ${key}: ${value.students_nb}. List: ${value.students_list.join(', ')}\n`;
+//       responseText += `Number of students in ${key}: ${value.students_nb}.
+//       List: ${value.students_list.join(', ')}\n`;
 //     }
 
 //     // Important : envoyer exactement comme attendu, avec le dernier \n
